@@ -58,6 +58,11 @@ void Window::Render(SDL_Window *window, SDL_Surface *screenSurface)
     int catX = game.GetCatX() * blockSize;
     int catY = game.GetCatY() * blockSize;
     drawSurface(surfaces[SurfaceID::SURFACE_CAT], screenSurface, catX, catY);
+
+    // Render end of game
+    auto [endOfGameX, endOfGameY] = game.GetEndOfGame();
+    drawSurface(surfaces[SurfaceID::SURFACE_BLOCK_RED], screenSurface, endOfGameX*blockSize, endOfGameY*blockSize);
+
     // Render game over
     if (game.GameOver())
     {

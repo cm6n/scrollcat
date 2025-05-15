@@ -38,19 +38,17 @@ void Game::InitGame()
             if (c == '|') {
                 // Block
                 blocks.push_back(std::make_pair(x, y));
-                std::cout << "Block at: (" << x << ", " << y << ")" << std::endl;
             } else if (c == 'F') {
                 // Food
                 food.push_back(std::make_pair(x, y));
-                std::cout << "Food at: (" << x << ", " << y << ")" << std::endl;
             } else if (c == 'C') {
                 // Cat initial position
                 catX = x;
                 catY = y;
-                std::cout << "Cat initial position at: (" << catX << ", " << catY << ")" << std::endl;
             } else if (c == 'E') {
                 // End of level marker
-                // Could be used for level completion logic
+                endofgameX = x;
+                endofgameY = y;
             }
         }
         x++; // Move to the next column
@@ -61,7 +59,10 @@ void Game::InitGame()
 
 void Game::Update()
 {
-    // Physics updates.
+    if (gameOver)
+    {
+        return; // No updates if the game is over.
+    }
 
     // User input updates.
     // Update the cat's position based on the current direction.
@@ -87,8 +88,6 @@ void Game::Update()
             catXvelocity += 3;
             break;
     }
-    std::cout << "catXvelocity: " << catXvelocity << " ";
-    std::cout << "catYvelocity: " << catYvelocity << std::endl;
     int tempXvelocity = catXvelocity;
     int tempYvelocity = catYvelocity;
     while (tempXvelocity != 0 || tempYvelocity != 0)
@@ -118,6 +117,28 @@ void Game::Update()
             tempCatY = newCatY;
             newCatY--;
             tempYvelocity++;
+        }
+        // Check for collision with end of game.
+        if (newCatX == endofgameX && newCatY == endofgameY)
+        {
+            gameOver = true;
+            std::cout << "Game Over! You reached the end of the level." << std::endl;
+            break;
+        }
+
+        // Check for collisions with food
+        for (auto it = food.begin(); it != food.end();)
+        {
+            if (it->first == newCatX && it->second == newCatY)
+            {
+                // Food eaten
+                it = food.erase(it);
+                std::cout << "Food eaten at: (" << newCatX << ", " << newCatY << ")" << std::endl;
+            }
+            else
+            {
+                ++it;
+            }
         }
         // Check for collisions with blocks
         for (const auto &block : blocks)
