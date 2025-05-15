@@ -14,17 +14,18 @@ void Game::InitGame()
     blocks.clear();
     gameOver = false;
     currentDirection = Direction::NONE;
-    
+
     // Read level0.txt and populate food and blocks.
     // Each line in the file represents a column in the grid.
     // "|" represents a block
     // "F" represents food
-    // "C" represents the initial cat position. 
+    // "C" represents the initial cat position.
     // "E" represents the end of the level.
 
     // Read levels/level0.txt line by line:
     std::ifstream levelFile("levels/level" + std::to_string(level) + ".txt");
-    if (!levelFile.is_open()) {
+    if (!levelFile.is_open())
+    {
         // Failed to open the file
         gameOver = true;
         return;
@@ -32,22 +33,31 @@ void Game::InitGame()
 
     std::string line;
     int x = 0; // Column index
-    
-    while (std::getline(levelFile, line)) {
-        for (int y = 0; y < line.length(); y++) {
+
+    while (std::getline(levelFile, line))
+    {
+        for (int y = 0; y < line.length(); y++)
+        {
             char c = line[y];
-            
-            if (c == '|') {
+
+            if (c == '|')
+            {
                 // Block
                 blocks.push_back(std::make_pair(x, y));
-            } else if (c == 'F') {
+            }
+            else if (c == 'F')
+            {
                 // Food
                 food.push_back(std::make_pair(x, y));
-            } else if (c == 'C') {
+            }
+            else if (c == 'C')
+            {
                 // Cat initial position
                 catX = x;
                 catY = y;
-            } else if (c == 'E') {
+            }
+            else if (c == 'E')
+            {
                 // End of level marker
                 endofgameX = x;
                 endofgameY = y;
@@ -55,8 +65,25 @@ void Game::InitGame()
         }
         x++; // Move to the next column
     }
-    
+
     levelFile.close();
+}
+
+bool Game::CatIsResting()
+{
+    return catIdleTime > 10;
+}
+
+bool Game::GetCatIsOnBlock()
+{
+    for (const auto &block : blocks)
+    {
+        if (block.first == catX && block.second == catY + 1)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 void Game::Update()
@@ -73,22 +100,22 @@ void Game::Update()
     int newCatY = catY;
     switch (currentDirection)
     {
-        case Direction::UP:
-            std::cout << "UP" << std::endl;
-            catYvelocity -= 3;
-            break;
-        case Direction::DOWN:
-            std::cout << "DOWN" << std::endl;
-            catYvelocity += 3;
-            break;
-        case Direction::LEFT:
-            std::cout << "LEFT" << std::endl;
-            catXvelocity -= 3;
-            break;
-        case Direction::RIGHT:
-            std::cout << "RIGHT" << std::endl;
-            catXvelocity += 3;
-            break;
+    case Direction::UP:
+        std::cout << "UP" << std::endl;
+        catYvelocity -= 3;
+        break;
+    case Direction::DOWN:
+        std::cout << "DOWN" << std::endl;
+        catYvelocity += 3;
+        break;
+    case Direction::LEFT:
+        std::cout << "LEFT" << std::endl;
+        catXvelocity -= 3;
+        break;
+    case Direction::RIGHT:
+        std::cout << "RIGHT" << std::endl;
+        catXvelocity += 3;
+        break;
     }
     int tempXvelocity = catXvelocity;
     int tempYvelocity = catYvelocity;
@@ -190,11 +217,19 @@ void Game::Update()
 
     currentDirection = Direction::NONE;
 
+    if (newCatX != catX || newCatY != catY)
+    {
+        catIdleTime = 0;
+    }
+    else
+    {
+        catIdleTime++;
+    }
     catX = newCatX;
     catY = newCatY;
 }
 
-void Game::ChangeDirection(Direction newDirection) 
+void Game::ChangeDirection(Direction newDirection)
 {
     currentDirection = newDirection;
 }

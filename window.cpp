@@ -20,8 +20,8 @@ bool Window::LoadAssets()
     surfaces[SurfaceID::SURFACE_BLOCK_RED] = loadBMPOrThrow("assets/block_red_12x12.bmp");
     surfaces[SurfaceID::SURFACE_CAT_SIT] = loadBMPOrThrow("assets/cat_sit_36x36.bmp");
     surfaces[SurfaceID::SURFACE_CAT_WALK1] = loadBMPOrThrow("assets/cat_walk1_36x36.bmp");
-    // TODO: load different cat walk 2.
-    surfaces[SurfaceID::SURFACE_CAT_WALK2] = loadBMPOrThrow("assets/cat_walk1_36x36.bmp");
+    surfaces[SurfaceID::SURFACE_CAT_WALK2] = loadBMPOrThrow("assets/cat_walk2_36x36.bmp");
+    surfaces[SurfaceID::SURFACE_CAT_JUMP] = loadBMPOrThrow("assets/cat_jump1_36x36.bmp");
     // TODO: Add a food image.
     surfaces[SurfaceID::SURFACE_FOOD] = loadBMPOrThrow("assets/block_green_12x12.bmp");
     // TODO: Add a game over image.
@@ -32,7 +32,7 @@ bool Window::LoadAssets()
 static void drawSurface(SDL_Surface *surface, SDL_Surface *screenSurface, int x, int y)
 {
     SDL_Rect destinationRect;
-    destinationRect.x = x;  // Offset from the left edge
+    destinationRect.x = x; // Offset from the left edge
     destinationRect.y = y; // Offset from the top edge
     SDL_BlitSurface(surface, NULL, screenSurface, &destinationRect);
 }
@@ -60,25 +60,39 @@ void Window::Render(SDL_Window *window, SDL_Surface *screenSurface)
     int catX = game.GetCatX() * blockSize;
     int catY = game.GetCatY() * blockSize;
     auto [catXvelocity, catYvelocity] = game.GetCatVelocity();
-    if (catXvelocity == 0 && catYvelocity == 0)
+
+    if (game.CatIsResting() && game.GetCatIsOnBlock())
     {
         drawSurface(surfaces[SurfaceID::SURFACE_CAT_SIT], screenSurface, catX, catY);
     }
-    else if (catXvelocity != 0 || catYvelocity != 0)
+    else
     {
-        static int catWalk = 0;
-        catWalk++;
-        if (catWalk) {
-            drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK1], screenSurface, catX, catY);
-            catWalk = 0;
-        } else {
-            drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK2], screenSurface, catX, catY);
+        if (!game.GetCatIsOnBlock())
+        {
+            drawSurface(surfaces[SurfaceID::SURFACE_CAT_JUMP], screenSurface, catX, catY);
+        }
+        else
+        {
+            static int catWalk = 0;
+            if (catXvelocity != 0)
+            {
+                catWalk++;
+            }
+            if (catWalk > 1)
+            {
+                drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK1], screenSurface, catX, catY);
+                catWalk = 0;
+            }
+            else
+            {
+                drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK2], screenSurface, catX, catY);
+            }
         }
     }
 
     // Render end of game
     auto [endOfGameX, endOfGameY] = game.GetEndOfGame();
-    drawSurface(surfaces[SurfaceID::SURFACE_BLOCK_RED], screenSurface, endOfGameX*blockSize, endOfGameY*blockSize);
+    drawSurface(surfaces[SurfaceID::SURFACE_BLOCK_RED], screenSurface, endOfGameX * blockSize, endOfGameY * blockSize);
 
     // Render game over
     if (game.GameOver())
@@ -131,8 +145,8 @@ void Window::Play()
 {
     LoadAssets();
 
-    const int SCREEN_WIDTH = 640*2;
-    const int SCREEN_HEIGHT = 480*2;
+    const int SCREEN_WIDTH = 640 * 2;
+    const int SCREEN_HEIGHT = 480 * 2;
     SDL_Window *window = NULL; // The window we'll be rendering to.
     SDL_Surface *screenSurface = NULL;
     if (SDL_Init(SDL_INIT_VIDEO) != 0)

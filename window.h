@@ -18,6 +18,7 @@ public:
         SURFACE_CAT_SIT,
         SURFACE_CAT_WALK1,
         SURFACE_CAT_WALK2,
+        SURFACE_CAT_JUMP,
         SURFACE_FOOD,
         SURFACE_GAME_OVER
     };
