@@ -1,6 +1,7 @@
 #include "game.h"
 #include <fstream>
 #include <string>
+#include <iostream>
 
 void Game::InitGame()
 {
@@ -20,7 +21,7 @@ void Game::InitGame()
     // "E" represents the end of the level.
 
     // Read levels/level0.txt line by line:
-    std::ifstream levelFile("scrollcat/levels/level0.txt");
+    std::ifstream levelFile("levels/level0.txt");
     if (!levelFile.is_open()) {
         // Failed to open the file
         gameOver = true;
@@ -37,13 +38,16 @@ void Game::InitGame()
             if (c == '|') {
                 // Block
                 blocks.push_back(std::make_pair(x, y));
+                std::cout << "Block at: (" << x << ", " << y << ")" << std::endl;
             } else if (c == 'F') {
                 // Food
                 food.push_back(std::make_pair(x, y));
+                std::cout << "Food at: (" << x << ", " << y << ")" << std::endl;
             } else if (c == 'C') {
                 // Cat initial position
                 catX = x;
                 catY = y;
+                std::cout << "Cat initial position at: (" << catX << ", " << catY << ")" << std::endl;
             } else if (c == 'E') {
                 // End of level marker
                 // Could be used for level completion logic

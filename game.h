@@ -19,13 +19,17 @@ public:
         CAT,
         BLOCK,
         FOOD
-    };
+    }; 
 
     Game(int sizeX, int sizeY) : sizeX(sizeX), sizeY(sizeY) {}
     void InitGame();
     void ChangeDirection(Direction newDirection);
     void Update();
     bool GameOver();
+    int GetCatX() const { return catX; }
+    int GetCatY() const { return catY; }
+    std::vector<std::pair<int, int>> GetFood() const { return food; }
+    std::vector<std::pair<int, int>> GetBlocks() const { return blocks; }
 
 private:
     const int sizeX, sizeY;

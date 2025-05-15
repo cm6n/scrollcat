@@ -19,7 +19,7 @@ bool Window::LoadAssets()
     surfaces[SurfaceID::SURFACE_BLOCK_BLUE] = loadBMPOrThrow("assets/block_blue_12x12.bmp");
     surfaces[SurfaceID::SURFACE_BLOCK_RED] = loadBMPOrThrow("assets/block_red_12x12.bmp");
     // TODO: Add a cat image.
-    surfaces[SurfaceID::SURFACE_CAT] = loadBMPOrThrow("assets/block_blue_12x12.bmp");
+    surfaces[SurfaceID::SURFACE_CAT] = loadBMPOrThrow("assets/block_red_12x12.bmp");
     // TODO: Add a food image.
     surfaces[SurfaceID::SURFACE_FOOD] = loadBMPOrThrow("assets/block_blue_12x12.bmp");
     // TODO: Add a game over image.
@@ -40,8 +40,31 @@ void Window::Render(SDL_Window *window, SDL_Surface *screenSurface)
     // Fill the surface with white
     SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 255, 255, 255));
 
-    drawSurface(surfaces[SurfaceID::SURFACE_BLOCK_BLUE], screenSurface, 0, 0);
-    drawSurface(surfaces[SurfaceID::SURFACE_BLOCK_RED], screenSurface, 100, 50);
+    // Render blocks
+    for (const auto &block : game.GetBlocks())
+    {
+        int x = block.first * blockSize;
+        int y = block.second * blockSize;
+        drawSurface(surfaces[SurfaceID::SURFACE_BLOCK_BLUE], screenSurface, x, y);
+    }
+    // Render food
+    for (const auto &food : game.GetFood())
+    {
+        int x = food.first * blockSize;
+        int y = food.second * blockSize;
+        drawSurface(surfaces[SurfaceID::SURFACE_FOOD], screenSurface, x, y);
+    }
+    // Render cat
+    int catX = game.GetCatX() * blockSize;
+    int catY = game.GetCatY() * blockSize;
+    drawSurface(surfaces[SurfaceID::SURFACE_CAT], screenSurface, catX, catY);
+    // Render game over
+    if (game.GameOver())
+    {
+        int gameOverX = 0; // Centered on the screen
+        int gameOverY = 0; // Centered on the screen
+        drawSurface(surfaces[SurfaceID::SURFACE_GAME_OVER], screenSurface, gameOverX, gameOverY);
+    }
     // Update the surface
     SDL_UpdateWindowSurface(window);
 }
