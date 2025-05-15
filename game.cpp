@@ -8,6 +8,8 @@ void Game::InitGame()
     // Initialize the game state
     catX = 0;
     catY = 0;
+    catXvelocity = 0;
+    catYvelocity = 0;
     food.clear();
     blocks.clear();
     gameOver = false;
@@ -21,7 +23,7 @@ void Game::InitGame()
     // "E" represents the end of the level.
 
     // Read levels/level0.txt line by line:
-    std::ifstream levelFile("levels/level0.txt");
+    std::ifstream levelFile("levels/level" + std::to_string(level) + ".txt");
     if (!levelFile.is_open()) {
         // Failed to open the file
         gameOver = true;
@@ -121,8 +123,18 @@ void Game::Update()
         // Check for collision with end of game.
         if (newCatX == endofgameX && newCatY == endofgameY)
         {
-            gameOver = true;
-            std::cout << "Game Over! You reached the end of the level." << std::endl;
+            if (level < 2)
+            {
+                level++;
+                InitGame();
+                return;
+            }
+            else
+            {
+                std::cout << "You completed the game!" << std::endl;
+                gameOver = true;
+            }
+            std::cout << "You reached the end of the level." << std::endl;
             break;
         }
 

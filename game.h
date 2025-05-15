@@ -35,6 +35,8 @@ public:
 
 private:
     const int sizeX, sizeY;
+    int level = 0;
+    int score = 0;
     int catX = 0;
     int catY = 0;
     int catXvelocity = 0;
