@@ -11,7 +11,8 @@ public:
         UP,
         RIGHT,
         LEFT,
-        DOWN
+        DOWN,
+        NONE
     };
 
     enum class GameObject
@@ -35,9 +36,11 @@ private:
     const int sizeX, sizeY;
     int catX = 0;
     int catY = 0;
+    int catXvelocity = 0;
+    int catYvelocity = 0;
     std::vector<std::pair<int, int>> food;
     std::vector<std::pair<int, int>> blocks;
     bool gameOver = false;
-    Direction currentDirection = Direction::UP;
+    Direction currentDirection = Direction::NONE;
 
 };
