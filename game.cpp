@@ -104,20 +104,20 @@ void Game::Update()
         std::cout << "UP" << std::endl;
         if (GetCatIsOnBlock()) {
             // Only jump when on a block.
-            catYvelocity -= 3;
+            catYvelocity -= 4;
         }
         break;
     case Direction::DOWN:
         std::cout << "DOWN" << std::endl;
-        catYvelocity += 3;
+        catYvelocity += 1;
         break;
     case Direction::LEFT:
         std::cout << "LEFT" << std::endl;
-        catXvelocity -= 3;
+        catXvelocity -= 2;
         break;
     case Direction::RIGHT:
         std::cout << "RIGHT" << std::endl;
-        catXvelocity += 3;
+        catXvelocity += 2;
         break;
     }
     int tempXvelocity = catXvelocity;
