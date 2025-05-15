@@ -8,7 +8,7 @@ class Window
 {
 public:
     Window() : game(gridSizeX, gridSizeY) {}
-    bool LoadAssets();
+
     void Play();
 
     enum class SurfaceID
@@ -29,6 +29,7 @@ public:
     };
 
 private:
+    void LoadAssets();
     bool HandleInputs(); // Return true unless quit event happens.
     void Render(SDL_Window *window, SDL_Surface *screenSurface);
     const int gridSizeX = 32;

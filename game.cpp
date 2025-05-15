@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <iostream>
+#include <algorithm>
 
 void Game::InitGame()
 {
@@ -113,13 +114,17 @@ void Game::Update()
         break;
     case Direction::LEFT:
         std::cout << "LEFT" << std::endl;
-        catXvelocity -= 2;
+        catXvelocity -= 3;
         break;
     case Direction::RIGHT:
         std::cout << "RIGHT" << std::endl;
-        catXvelocity += 2;
+        catXvelocity += 3;
         break;
     }
+
+    catXvelocity = std::max(catMinVelocity, std::min(catXvelocity, catMaxVelocity));
+    catYvelocity = std::max(catMinVelocity, std::min(catYvelocity, catMaxVelocity));
+
     int tempXvelocity = catXvelocity;
     int tempYvelocity = catYvelocity;
     while (tempXvelocity != 0 || tempYvelocity != 0)
@@ -192,6 +197,13 @@ void Game::Update()
                 newCatY = tempCatY;
                 break; // Stop checking other blocks
             }
+        }
+        // Check for falling ending the game.
+        if (newCatY > sizeY)
+        {
+            gameOver = true;
+            std::cout << "You fell off the level!" << std::endl;
+            break;
         }
     }
 

@@ -2,10 +2,6 @@
 
 int main(int argc, char* argv[]) {
     Window window;
-    if(window.LoadAssets()) {
-        window.Play();
-    } else {
-        return 1;
-    }
+    window.Play();
     return 0;
 }

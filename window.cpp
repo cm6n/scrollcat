@@ -14,7 +14,7 @@ static SDL_Surface *loadBMPOrThrow(const char *filename)
     return surface;
 }
 
-bool Window::LoadAssets()
+void Window::LoadAssets()
 {
     surfaces[SurfaceID::SURFACE_BLOCK_BLUE] = loadBMPOrThrow("assets/block_blue_36x36.bmp");
     surfaces[SurfaceID::SURFACE_BLOCK_RED] = loadBMPOrThrow("assets/block_red_12x12.bmp");
@@ -26,13 +26,9 @@ bool Window::LoadAssets()
     surfaces[SurfaceID::SURFACE_CAT_WALK1_LEFT] = loadBMPOrThrow("assets/cat_walk1_L_36x36.bmp");
     surfaces[SurfaceID::SURFACE_CAT_WALK2_LEFT] = loadBMPOrThrow("assets/cat_walk2_L_36x36.bmp");
     surfaces[SurfaceID::SURFACE_CAT_JUMP_LEFT] = loadBMPOrThrow("assets/cat_jump1_L_36x36.bmp");
-    // TODO: Add a food image.
     surfaces[SurfaceID::SURFACE_FOOD] = loadBMPOrThrow("assets/food1_36x36.bmp");
-    // TODO: Add a game over image.
-    surfaces[SurfaceID::SURFACE_GAME_OVER] = loadBMPOrThrow("assets/block_red_12x12.bmp");
-    // TODO: Add a game won image.
-    surfaces[SurfaceID::SURFACE_GAME_WON] = loadBMPOrThrow("assets/block_green_12x12.bmp");
-    return true;
+    surfaces[SurfaceID::SURFACE_GAME_OVER] = loadBMPOrThrow("assets/game_over_200x100_b.bmp");
+    surfaces[SurfaceID::SURFACE_GAME_WON] = loadBMPOrThrow("assets/game_won_200x100_b.bmp");
 }
 
 static void drawSurface(SDL_Surface *surface, SDL_Surface *screenSurface, int x, int y)

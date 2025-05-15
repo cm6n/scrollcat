@@ -48,6 +48,8 @@ private:
     int catY = 0;
     int catXvelocity = 0;
     int catYvelocity = 0;
+    const int catMaxVelocity = 5;
+    const int catMinVelocity = -5;
     int catIdleTime = 0;
     int endofgameX = 0;
     int endofgameY = 0;
