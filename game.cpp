@@ -24,6 +24,10 @@ void Game::InitGame()
     // "E" represents the end of the level.
 
     // Read levels/level0.txt line by line:
+    if (level > maxLevel)
+    {
+        throw std::runtime_error("Level out of range.");
+    }
     std::ifstream levelFile("levels/level" + std::to_string(level) + ".txt");
     if (!levelFile.is_open())
     {
@@ -158,7 +162,7 @@ void Game::Update()
         // Check for collision with end of game.
         if (newCatX == endofgameX && newCatY == endofgameY)
         {
-            if (level < 2)
+            if (level < maxLevel)
             {
                 level++;
                 InitGame();
@@ -169,6 +173,7 @@ void Game::Update()
                 std::cout << "You completed the game!" << std::endl;
                 gameWon = true;
                 gameOver = true;
+                level = 0;
             }
             std::cout << "You reached the end of the level." << std::endl;
             break;
@@ -202,6 +207,7 @@ void Game::Update()
         if (newCatY > sizeY)
         {
             gameOver = true;
+            level = 0;
             std::cout << "You fell off the level!" << std::endl;
             break;
         }

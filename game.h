@@ -43,6 +43,7 @@ public:
 private:
     const int sizeX, sizeY;
     int level = 0;
+    const int maxLevel = 2;
     int score = 0;
     int catX = 0;
     int catY = 0;
