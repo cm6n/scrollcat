@@ -8,6 +8,11 @@ void Game::Update()
 {
 }
 
+void Game::ChangeDirection(Direction newDirection) 
+{
+    currentDirection = newDirection;
+}
+
 bool Game::GameOver()
 {
     return gameOver;
