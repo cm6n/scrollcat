@@ -61,6 +61,40 @@ void Game::InitGame()
 
 void Game::Update()
 {
+    // Physics updates.
+
+    // User input updates.
+    // Update the cat's position based on the current direction.
+    // Move unless blocked by a box.
+    int newCatX = catX;
+    int newCatY = catY;
+    switch (currentDirection)
+    {
+        case Direction::UP:
+            newCatY--;
+            break;
+        case Direction::DOWN:
+            newCatY++;
+            break;
+        case Direction::LEFT:
+            newCatX--;
+            break;
+        case Direction::RIGHT:
+            newCatX++;
+            break;
+    }
+    // Check for collisions with blocks
+    for (const auto& block : blocks)
+    {
+        if (block.first == newCatX && block.second == newCatY)
+        {
+            newCatX = catX;
+            newCatY = catY;
+            break; // Stop checking other blocks
+        }
+    }
+    catX = newCatX;
+    catY = newCatY;
 }
 
 void Game::ChangeDirection(Direction newDirection) 
