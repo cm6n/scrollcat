@@ -32,6 +32,9 @@ public:
     std::vector<std::pair<int, int>> GetFood() const { return food; }
     std::vector<std::pair<int, int>> GetBlocks() const { return blocks; }
     std::pair<int, int> GetEndOfGame() const { return {endofgameX, endofgameY}; }
+    std::pair<int, int> GetCatVelocity() const { return {catXvelocity, catYvelocity}; }
+    int GetLevel() const { return level; }
+    int GetScore() const { return score; }
 
 private:
     const int sizeX, sizeY;

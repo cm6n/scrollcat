@@ -59,7 +59,22 @@ void Window::Render(SDL_Window *window, SDL_Surface *screenSurface)
     // Render cat
     int catX = game.GetCatX() * blockSize;
     int catY = game.GetCatY() * blockSize;
-    drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK1], screenSurface, catX, catY);
+    auto [catXvelocity, catYvelocity] = game.GetCatVelocity();
+    if (catXvelocity == 0 && catYvelocity == 0)
+    {
+        drawSurface(surfaces[SurfaceID::SURFACE_CAT_SIT], screenSurface, catX, catY);
+    }
+    else if (catXvelocity != 0 || catYvelocity != 0)
+    {
+        static int catWalk = 0;
+        catWalk++;
+        if (catWalk) {
+            drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK1], screenSurface, catX, catY);
+            catWalk = 0;
+        } else {
+            drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK2], screenSurface, catX, catY);
+        }
+    }
 
     // Render end of game
     auto [endOfGameX, endOfGameY] = game.GetEndOfGame();
