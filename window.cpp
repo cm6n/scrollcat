@@ -27,7 +27,7 @@ bool Window::LoadAssets()
     surfaces[SurfaceID::SURFACE_CAT_WALK2_LEFT] = loadBMPOrThrow("assets/cat_walk2_L_36x36.bmp");
     surfaces[SurfaceID::SURFACE_CAT_JUMP_LEFT] = loadBMPOrThrow("assets/cat_jump1_L_36x36.bmp");
     // TODO: Add a food image.
-    surfaces[SurfaceID::SURFACE_FOOD] = loadBMPOrThrow("assets/block_green_12x12.bmp");
+    surfaces[SurfaceID::SURFACE_FOOD] = loadBMPOrThrow("assets/food1_36x36.bmp");
     // TODO: Add a game over image.
     surfaces[SurfaceID::SURFACE_GAME_OVER] = loadBMPOrThrow("assets/block_red_12x12.bmp");
     // TODO: Add a game won image.
