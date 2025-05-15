@@ -16,10 +16,12 @@ static SDL_Surface *loadBMPOrThrow(const char *filename)
 
 bool Window::LoadAssets()
 {
-    surfaces[SurfaceID::SURFACE_BLOCK_BLUE] = loadBMPOrThrow("assets/block_blue_12x12.bmp");
+    surfaces[SurfaceID::SURFACE_BLOCK_BLUE] = loadBMPOrThrow("assets/block_blue_36x36.bmp");
     surfaces[SurfaceID::SURFACE_BLOCK_RED] = loadBMPOrThrow("assets/block_red_12x12.bmp");
-    // TODO: Add a cat image.
-    surfaces[SurfaceID::SURFACE_CAT] = loadBMPOrThrow("assets/block_red_12x12.bmp");
+    surfaces[SurfaceID::SURFACE_CAT_SIT] = loadBMPOrThrow("assets/cat_sit_36x36.bmp");
+    surfaces[SurfaceID::SURFACE_CAT_WALK1] = loadBMPOrThrow("assets/cat_walk1_36x36.bmp");
+    // TODO: load different cat walk 2.
+    surfaces[SurfaceID::SURFACE_CAT_WALK2] = loadBMPOrThrow("assets/cat_walk1_36x36.bmp");
     // TODO: Add a food image.
     surfaces[SurfaceID::SURFACE_FOOD] = loadBMPOrThrow("assets/block_green_12x12.bmp");
     // TODO: Add a game over image.
@@ -57,7 +59,7 @@ void Window::Render(SDL_Window *window, SDL_Surface *screenSurface)
     // Render cat
     int catX = game.GetCatX() * blockSize;
     int catY = game.GetCatY() * blockSize;
-    drawSurface(surfaces[SurfaceID::SURFACE_CAT], screenSurface, catX, catY);
+    drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK1], screenSurface, catX, catY);
 
     // Render end of game
     auto [endOfGameX, endOfGameY] = game.GetEndOfGame();
@@ -114,15 +116,15 @@ void Window::Play()
 {
     LoadAssets();
 
-    const int SCREEN_WIDTH = 640;
-    const int SCREEN_HEIGHT = 480;
+    const int SCREEN_WIDTH = 640*2;
+    const int SCREEN_HEIGHT = 480*2;
     SDL_Window *window = NULL; // The window we'll be rendering to.
     SDL_Surface *screenSurface = NULL;
     if (SDL_Init(SDL_INIT_VIDEO) != 0)
     {
         throw std::runtime_error("SDL_Init Error: " + std::string(SDL_GetError()));
     }
-    window = SDL_CreateWindow("Snake", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+    window = SDL_CreateWindow("ScrollCat", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                               SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (window == NULL)
     {

@@ -15,7 +15,9 @@ public:
     {
         SURFACE_BLOCK_BLUE,
         SURFACE_BLOCK_RED,
-        SURFACE_CAT,
+        SURFACE_CAT_SIT,
+        SURFACE_CAT_WALK1,
+        SURFACE_CAT_WALK2,
         SURFACE_FOOD,
         SURFACE_GAME_OVER
     };
@@ -25,7 +27,7 @@ private:
     void Render(SDL_Window *window, SDL_Surface *screenSurface);
     const int gridSizeX = 32;
     const int gridSizeY = 32;
-    const int blockSize = 12;
+    const int blockSize = 36;
     std::unordered_map<SurfaceID, SDL_Surface *> surfaces;
     Game game;
 };
