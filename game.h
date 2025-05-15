@@ -26,11 +26,13 @@ public:
     void InitGame();
     void ChangeDirection(Direction newDirection);
     void Update();
-    bool GameOver();
+    bool GameOver() { return gameOver; }
+    bool GameWon() { return gameWon; }
     int GetCatX() const { return catX; }
     int GetCatY() const { return catY; }
     bool GetCatIsOnBlock();
     bool CatIsResting();
+    bool CatIsFacingLeft() const { return catFacingLeft; }
     std::vector<std::pair<int, int>> GetFood() const { return food; }
     std::vector<std::pair<int, int>> GetBlocks() const { return blocks; }
     std::pair<int, int> GetEndOfGame() const { return {endofgameX, endofgameY}; }
@@ -52,5 +54,7 @@ private:
     std::vector<std::pair<int, int>> food;
     std::vector<std::pair<int, int>> blocks;
     bool gameOver = false;
+    bool gameWon = false;
     Direction currentDirection = Direction::NONE;
+    bool catFacingLeft = false;
 };

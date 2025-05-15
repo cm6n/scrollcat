@@ -22,10 +22,16 @@ bool Window::LoadAssets()
     surfaces[SurfaceID::SURFACE_CAT_WALK1] = loadBMPOrThrow("assets/cat_walk1_36x36.bmp");
     surfaces[SurfaceID::SURFACE_CAT_WALK2] = loadBMPOrThrow("assets/cat_walk2_36x36.bmp");
     surfaces[SurfaceID::SURFACE_CAT_JUMP] = loadBMPOrThrow("assets/cat_jump1_36x36.bmp");
+    surfaces[SurfaceID::SURFACE_CAT_SIT_LEFT] = loadBMPOrThrow("assets/cat_sit_L_36x36.bmp");
+    surfaces[SurfaceID::SURFACE_CAT_WALK1_LEFT] = loadBMPOrThrow("assets/cat_walk1_L_36x36.bmp");
+    surfaces[SurfaceID::SURFACE_CAT_WALK2_LEFT] = loadBMPOrThrow("assets/cat_walk2_L_36x36.bmp");
+    surfaces[SurfaceID::SURFACE_CAT_JUMP_LEFT] = loadBMPOrThrow("assets/cat_jump1_L_36x36.bmp");
     // TODO: Add a food image.
     surfaces[SurfaceID::SURFACE_FOOD] = loadBMPOrThrow("assets/block_green_12x12.bmp");
     // TODO: Add a game over image.
     surfaces[SurfaceID::SURFACE_GAME_OVER] = loadBMPOrThrow("assets/block_red_12x12.bmp");
+    // TODO: Add a game won image.
+    surfaces[SurfaceID::SURFACE_GAME_WON] = loadBMPOrThrow("assets/block_green_12x12.bmp");
     return true;
 }
 
@@ -63,13 +69,27 @@ void Window::Render(SDL_Window *window, SDL_Surface *screenSurface)
 
     if (game.CatIsResting() && game.GetCatIsOnBlock())
     {
-        drawSurface(surfaces[SurfaceID::SURFACE_CAT_SIT], screenSurface, catX, catY);
+        if (game.CatIsFacingLeft())
+        {
+            drawSurface(surfaces[SurfaceID::SURFACE_CAT_SIT_LEFT], screenSurface, catX, catY);
+        }
+        else
+        {
+            drawSurface(surfaces[SurfaceID::SURFACE_CAT_SIT], screenSurface, catX, catY);
+        }
     }
     else
     {
         if (!game.GetCatIsOnBlock())
         {
-            drawSurface(surfaces[SurfaceID::SURFACE_CAT_JUMP], screenSurface, catX, catY);
+            if (game.CatIsFacingLeft())
+            {
+                drawSurface(surfaces[SurfaceID::SURFACE_CAT_JUMP_LEFT], screenSurface, catX, catY);
+            }
+            else
+            {
+                drawSurface(surfaces[SurfaceID::SURFACE_CAT_JUMP], screenSurface, catX, catY);
+            }
         }
         else
         {
@@ -80,12 +100,26 @@ void Window::Render(SDL_Window *window, SDL_Surface *screenSurface)
             }
             if (catWalk > 1)
             {
-                drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK1], screenSurface, catX, catY);
+                if (game.CatIsFacingLeft())
+                {
+                    drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK1_LEFT], screenSurface, catX, catY);
+                }
+                else
+                {
+                    drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK1], screenSurface, catX, catY);
+                }
                 catWalk = 0;
             }
             else
             {
-                drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK2], screenSurface, catX, catY);
+                if (game.CatIsFacingLeft())
+                {
+                    drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK2_LEFT], screenSurface, catX, catY);
+                }
+                else
+                {
+                    drawSurface(surfaces[SurfaceID::SURFACE_CAT_WALK2], screenSurface, catX, catY);
+                }
             }
         }
     }
@@ -97,9 +131,16 @@ void Window::Render(SDL_Window *window, SDL_Surface *screenSurface)
     // Render game over
     if (game.GameOver())
     {
-        int gameOverX = 0; // Centered on the screen
-        int gameOverY = 0; // Centered on the screen
-        drawSurface(surfaces[SurfaceID::SURFACE_GAME_OVER], screenSurface, gameOverX, gameOverY);
+        int gameOverX = SCREEN_WIDTH / 2 - 100;
+        int gameOverY = SCREEN_HEIGHT / 2 - 50;
+        if (game.GameWon())
+        {
+            drawSurface(surfaces[SurfaceID::SURFACE_GAME_WON], screenSurface, gameOverX, gameOverY);
+        }
+        else
+        {
+            drawSurface(surfaces[SurfaceID::SURFACE_GAME_OVER], screenSurface, gameOverX, gameOverY);
+        }
     }
     // Update the surface
     SDL_UpdateWindowSurface(window);
@@ -145,8 +186,6 @@ void Window::Play()
 {
     LoadAssets();
 
-    const int SCREEN_WIDTH = 640 * 2;
-    const int SCREEN_HEIGHT = 480 * 2;
     SDL_Window *window = NULL; // The window we'll be rendering to.
     SDL_Surface *screenSurface = NULL;
     if (SDL_Init(SDL_INIT_VIDEO) != 0)

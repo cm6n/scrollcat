@@ -102,7 +102,10 @@ void Game::Update()
     {
     case Direction::UP:
         std::cout << "UP" << std::endl;
-        catYvelocity -= 3;
+        if (GetCatIsOnBlock()) {
+            // Only jump when on a block.
+            catYvelocity -= 3;
+        }
         break;
     case Direction::DOWN:
         std::cout << "DOWN" << std::endl;
@@ -159,6 +162,7 @@ void Game::Update()
             else
             {
                 std::cout << "You completed the game!" << std::endl;
+                gameWon = true;
                 gameOver = true;
             }
             std::cout << "You reached the end of the level." << std::endl;
@@ -189,6 +193,16 @@ void Game::Update()
                 break; // Stop checking other blocks
             }
         }
+    }
+
+    // Change cat direction if cat is moving.
+    if (catXvelocity > 0)
+    {
+        catFacingLeft = false;
+    }
+    else if (catXvelocity < 0)
+    {
+        catFacingLeft = true;
     }
 
     // Slow down the cat
@@ -227,14 +241,11 @@ void Game::Update()
     }
     catX = newCatX;
     catY = newCatY;
+
+
 }
 
 void Game::ChangeDirection(Direction newDirection)
 {
     currentDirection = newDirection;
-}
-
-bool Game::GameOver()
-{
-    return gameOver;
 }

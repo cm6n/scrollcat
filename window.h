@@ -19,8 +19,13 @@ public:
         SURFACE_CAT_WALK1,
         SURFACE_CAT_WALK2,
         SURFACE_CAT_JUMP,
+        SURFACE_CAT_SIT_LEFT,
+        SURFACE_CAT_WALK1_LEFT,
+        SURFACE_CAT_WALK2_LEFT,
+        SURFACE_CAT_JUMP_LEFT,
         SURFACE_FOOD,
-        SURFACE_GAME_OVER
+        SURFACE_GAME_OVER,
+        SURFACE_GAME_WON
     };
 
 private:
@@ -29,6 +34,8 @@ private:
     const int gridSizeX = 32;
     const int gridSizeY = 32;
     const int blockSize = 36;
+    const int SCREEN_WIDTH = 800 * 2;
+    const int SCREEN_HEIGHT = 360 * 2;
     std::unordered_map<SurfaceID, SDL_Surface *> surfaces;
     Game game;
 };
