@@ -27,16 +27,21 @@ bool Window::LoadAssets()
     return true;
 }
 
+static void drawSurface(SDL_Surface *surface, SDL_Surface *screenSurface, int x, int y)
+{
+    SDL_Rect destinationRect;
+    destinationRect.x = x;  // Offset from the left edge
+    destinationRect.y = y; // Offset from the top edge
+    SDL_BlitSurface(surface, NULL, screenSurface, &destinationRect);
+}
+
 void Window::Render(SDL_Window *window, SDL_Surface *screenSurface)
 {
     // Fill the surface with white
     SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 255, 255, 255));
 
-    SDL_Rect destinationRect;
-    destinationRect.x = 100;  // Offset from the left edge
-    destinationRect.y = 100; // Offset from the top edge
-    SDL_BlitSurface(surfaces[SurfaceID::SURFACE_BLOCK_BLUE], NULL, screenSurface, &destinationRect);
-
+    drawSurface(surfaces[SurfaceID::SURFACE_BLOCK_BLUE], screenSurface, 0, 0);
+    drawSurface(surfaces[SurfaceID::SURFACE_BLOCK_RED], screenSurface, 100, 50);
     // Update the surface
     SDL_UpdateWindowSurface(window);
 }
