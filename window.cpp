@@ -153,19 +153,20 @@ bool Window::HandleInputs()
         }
         else if (e.type == SDL_KEYDOWN)
         {
+            // TODO - process multiple keystrokes for diagonal jumping.
             switch (e.key.keysym.sym)
             {
             case SDLK_UP:
-                game.ChangeDirection(Game::Direction::UP);
+                game.ChangeDirection(Game::DIRECTION_UP);
                 break;
             case SDLK_DOWN:
-                game.ChangeDirection(Game::Direction::DOWN);
+                game.ChangeDirection(Game::DIRECTION_DOWN);
                 break;
             case SDLK_LEFT:
-                game.ChangeDirection(Game::Direction::LEFT);
+                game.ChangeDirection(Game::DIRECTION_LEFT);
                 break;
             case SDLK_RIGHT:
-                game.ChangeDirection(Game::Direction::RIGHT);
+                game.ChangeDirection(Game::DIRECTION_RIGHT);
                 break;
             case SDLK_RETURN:
                 if (game.GameOver())

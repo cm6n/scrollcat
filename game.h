@@ -6,14 +6,14 @@
 class Game
 {
 public:
-    enum class Direction
+    typedef enum Direction
     {
-        UP,
-        RIGHT,
-        LEFT,
-        DOWN,
-        NONE
-    };
+        DIRECTION_NONE = 0,
+        DIRECTION_UP = 0x0001,
+        DIRECTION_RIGHT = 0b0010,
+        DIRECTION_LEFT = 0b0100,
+        DIRECTION_DOWN = 0b1000
+    } Direction_t;
 
     enum class GameObject
     {
@@ -24,7 +24,7 @@ public:
 
     Game(int sizeX, int sizeY) : sizeX(sizeX), sizeY(sizeY) {}
     void InitGame();
-    void ChangeDirection(Direction newDirection);
+    void ChangeDirection(Direction_t newDirection);
     void Update();
     bool GameOver() { return gameOver; }
     bool GameWon() { return gameWon; }
@@ -58,6 +58,6 @@ private:
     std::vector<std::pair<int, int>> blocks;
     bool gameOver = false;
     bool gameWon = false;
-    Direction currentDirection = Direction::NONE;
+    Direction_t currentDirection = DIRECTION_NONE;
     bool catFacingLeft = false;
 };

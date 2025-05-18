@@ -14,7 +14,7 @@ void Game::InitGame()
     food.clear();
     blocks.clear();
     gameOver = false;
-    currentDirection = Direction::NONE;
+    currentDirection = DIRECTION_NONE;
 
     // Read level0.txt and populate food and blocks.
     // Each line in the file represents a column in the grid.
@@ -103,27 +103,27 @@ void Game::Update()
     // Move unless blocked by a box.
     int newCatX = catX;
     int newCatY = catY;
-    switch (currentDirection)
-    {
-    case Direction::UP:
+    if (currentDirection & DIRECTION_UP) {
         std::cout << "UP" << std::endl;
         if (GetCatIsOnBlock()) {
             // Only jump when on a block.
             catYvelocity -= 4;
         }
-        break;
-    case Direction::DOWN:
+    }
+    if (currentDirection & DIRECTION_DOWN)
+    {
         std::cout << "DOWN" << std::endl;
         catYvelocity += 1;
-        break;
-    case Direction::LEFT:
+    }
+    if (currentDirection & DIRECTION_LEFT)
+    {
         std::cout << "LEFT" << std::endl;
         catXvelocity -= 3;
-        break;
-    case Direction::RIGHT:
+    }
+    if (currentDirection & DIRECTION_RIGHT)
+    {
         std::cout << "RIGHT" << std::endl;
         catXvelocity += 3;
-        break;
     }
 
     catXvelocity = std::max(catMinVelocity, std::min(catXvelocity, catMaxVelocity));
@@ -247,7 +247,7 @@ void Game::Update()
         catYvelocity++;
     }
 
-    currentDirection = Direction::NONE;
+    currentDirection = DIRECTION_NONE;
 
     if (newCatX != catX || newCatY != catY)
     {
@@ -263,7 +263,7 @@ void Game::Update()
 
 }
 
-void Game::ChangeDirection(Direction newDirection)
+void Game::ChangeDirection(Direction_t newDirection)
 {
-    currentDirection = newDirection;
+    currentDirection = (Game::Direction_t) (currentDirection | newDirection);
 }
